@@ -1,0 +1,19 @@
+library(ggplot2)
+library(readxl)
+
+bys <- read_excel('Data/FucBys_2023.xlsx', sheet = 'Experiment FucBys')
+
+
+bys$Treatment <- factor(bys$Treatment)
+
+bys$Treatment <- relevel(bys$Treatment, ref = "Control")
+ggplot(bys, aes(x = Treatment, y = N_byss, fill = Morphotype)) + 
+  geom_boxplot() 
+
+
+force <- read_excel('Data/FucBys_2023.xlsx', sheet = 'Fuc_Tred_Force',na = "NA")
+force$True_Force <- force$Force - 9.81*force$Weight/1000
+
+ggplot(force, aes(x = Type, y = True_Force, fill = Morphotype)) + 
+  geom_boxplot() 
+
