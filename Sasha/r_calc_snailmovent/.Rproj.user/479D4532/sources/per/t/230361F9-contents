@@ -65,6 +65,8 @@ ggplot(snail_move, aes(y = Sd, x = Species, fill = Status)) + geom_boxplot() + t
 
 ggplot(snail_move, aes(y = Squares, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
 
+ggplot(snail_move, aes(y = Speed, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
+
 #########################################################################################
 
 ggplot(Litt, aes(y = Trek_lenght, x = Aperture_size, fill = Status)) + geom_point() + theme_bw() + geom_smooth(method = "lm")
@@ -87,13 +89,29 @@ ggplot(Domestic, aes(y = Squares, x = Species, fill = Status)) + geom_boxplot() 
 
 ggplot(Barbar, aes(y = Squares, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
 
-ggplot(Barbar_Litt, aes(y = Trek_lenght, x = Aperture_size, fill = Status)) + geom_point() + theme_bw() + geom_smooth(method = "lm")
+ggplot(Barbar_Litt, aes(y = Trek_lenght, x = Species, fill = Status)) + geom_point() + theme_bw() + geom_smooth(method = "lm")
 
 ggplot(Domestic_Litt, aes(y = Trek_lenght, x = Aperture_size, fill = Status)) + geom_point() + theme_bw() + geom_smooth(method = "lm")
 
 ggplot(Barbar_Hydr, aes(y = Trek_lenght, x = Aperture_size, fill = Status)) + geom_point() + theme_bw() + geom_smooth(method = "lm")
 
 ggplot(Domestic_Hydr, aes(y = Trek_lenght, x = Aperture_size, fill = Status)) + geom_point() + theme_bw() + geom_smooth(method = "lm")
+
+ggplot(Litt, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Hydr, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Domestic_Litt, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Domestic_Hydr, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Barbar_Litt, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Barbar_Hydr, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Barbar, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
+
+ggplot(Domestic, aes(y = Speed, x = Aperture_size, fill = Status)) + geom_boxplot() + theme_bw()
 
 #########################################################################################
 
@@ -117,5 +135,49 @@ summary(model_Squares_size_Status_Litt)
 model_Squares_size_Status_Hydr <- lm(Squares ~ Aperture_size * Status, data = Hydr)
 summary(model_Squares_size_Status_Hydr)
 
-Cf <- t.test(Turn_time ~ Species, data = snail_move)
-summary(Cf)
+model_Turn_time_Status_Litt <- lm(Turn_time ~ Aperture_size * Status, data = Litt)
+summary(model_Turn_time_size_Status_Litt)
+
+model_Turn_time_Status_Hydr <- lm(Turn_time ~ Aperture_size * Status, data = Hydr)
+summary(model_Turn_time_size_Status_Hydr)
+
+model_Sd_Status_Litt <- lm(Sd ~ Aperture_size * Status, data = Litt)
+summary(model_Sd_size_Status_Litt)
+
+model_Sd_Status_Hydr <- lm(Sd ~ Aperture_size * Status, data = Hydr)
+summary(model_Sd_size_Status_Hydr)
+
+model_Trek_lenght_Status_Litt <- lm(Trek_lenght ~ Aperture_size * Status, data = Litt)
+summary(model_Trek_lenght_size_Status_Litt)
+
+model_Trek_lenght_Status_Hydr <- lm(Trek_lenght ~ Aperture_size * Status, data = Hydr)
+summary(model_Trek_lenght_size_Status_Hydr)
+
+##########################################################################################
+
+TurnSp <- t.test(Turn_time ~ Species, data = snail_move)
+summary(TurnSp)
+
+TrekSp <- t.test(Trek_lenght ~ Species, data = snail_move)
+summary(TrekSp)
+
+SdSp <- t.test(Sd ~ Species, data = snail_move)
+summary(SdSp)
+
+SquaresSp <- t.test(Squares ~ Species, data = snail_move)
+summary(SquaresSp)
+
+##########################################################################################
+
+TurnSt <- t.test(Turn_time ~ Status, data = snail_move)
+summary(TurnSt)
+
+TrekSt <- t.test(Trek_lenght ~ Status, data = snail_move)
+summary(TrekSt)
+
+SdSt <- t.test(Sd ~ Status, data = snail_move)
+summary(SdSt)
+
+SquaresSt <- t.test(Squares ~ Status, data = snail_move)
+summary(SquaresSt)
+
