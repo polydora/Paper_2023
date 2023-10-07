@@ -1,0 +1,131 @@
+---
+title: "Snail_move"
+output: html_document
+date: "2023-09-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+
+```{r}
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(clipr)
+library(cowplot)
+
+```
+
+
+
+```{r}
+snail_move <- read_excel("Data/snail_movement_2023.xlsx", na = "NA")
+
+snail_move$Speed <- snail_move$Trek_lenght/snail_move$active_time
+
+Litt <- snail_move[snail_move$Species == "Littorina",]
+Hydr <- snail_move[snail_move$Species == "Hydrobia",]
+
+Barbar <- snail_move[snail_move$Barbarity == "Barbar",]
+Domestic <- snail_move[snail_move$Barbarity == "domestic",]
+
+Barbar_Litt <- Litt[Litt$Barbarity == "Barbar",]
+Barbar_Hydr <- Hydr[Hydr$Barbarity == "Barbar",]
+Domestic_Litt <- Litt[Litt$Barbarity == "domestic",]
+Domestic_Hydr <- Hydr[Hydr$Barbarity == "domestic",]
+
+
+snail_move  <- snail_move %>% filter(Barbarity == "Barbar")
+```
+# Дикие 
+
+## Время начала движения 
+
+```{r}
+
+ggplot(snail_move, aes(y = Turn_time, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
+
+```
+
+```{r}
+t.test(Turn_time ~ Status, data = snail_move %>% filter(Species == "Littorina"))
+```
+
+```{r}
+t.test(Turn_time ~ Status, data = snail_move %>% filter(Species == "Hydrobia"))
+```
+
+
+## Длинна Трека
+
+```{r}
+ggplot(snail_move, aes(y = Trek_lenght, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
+```
+
+```{r}
+t.test(Trek_lenght ~ Status, data = snail_move %>% filter(Species == "Littorina"))
+```
+
+```{r}
+t.test(Trek_lenght ~ Status, data = snail_move %>% filter(Species == "Hydrobia"))
+```
+
+
+## Отклонение 
+
+```{r}
+ggplot(snail_move, aes(y = Sd, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
+```
+
+```{r}
+t.test(Sd ~ Status, data = snail_move %>% filter(Species == "Littorina"))
+```
+
+
+```{r}
+t.test(Sd ~ Status, data = snail_move %>% filter(Species == "Hydrobia"))
+```
+
+
+## Квадраты
+
+```{r}
+ggplot(snail_move, aes(y = Squares, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
+```
+```{r}
+t.test(Squares ~ Status, data = snail_move %>% filter(Species == "Littorina"))
+```
+
+```{r}
+t.test(Squares ~ Status, data = snail_move %>% filter(Species == "Hydrobia"))
+```
+
+
+## Скорость
+
+```{r}
+ggplot(snail_move, aes(y = Speed, x = Species, fill = Status)) + geom_boxplot() + theme_bw()
+```
+
+
+```{r}
+t.test(Speed ~ Status, data = snail_move %>% filter(Species == "Littorina"))
+
+```
+
+```{r}
+t.test(Speed ~ Status, data = snail_move %>% filter(Species == "Hydrobia"))
+
+```
+
+
+## Зависимость  длины трека от размера устья
+
+```{r}
+ggplot(snail_move, aes(x = Aperture_size, y = Trek_lenght, colour = Status)) + geom_point() + facet_wrap (~Species) + geom_smooth(method = 'lm')
+```
+

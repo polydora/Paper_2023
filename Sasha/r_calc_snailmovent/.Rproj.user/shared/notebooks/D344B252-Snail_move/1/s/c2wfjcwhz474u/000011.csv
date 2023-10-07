@@ -1,0 +1,8 @@
+"0","plot_grid(Pl_lit_trek, Pl_hyd_trek)
+"
+"2","[38;5;232m`geom_smooth()` using formula = 'y ~ x'[39m"
+"2","Предупреждение: [38;5;232mRemoved 86 rows containing non-finite values (`stat_smooth()`).[39m"
+"2","Предупреждение: [38;5;232mRemoved 86 rows containing missing values (`geom_point()`).[39m"
+"2","[38;5;232m`geom_smooth()` using formula = 'y ~ x'[39m"
+"2","Предупреждение: [38;5;232mRemoved 59 rows containing non-finite values (`stat_smooth()`).[39m"
+"2","Предупреждение: [38;5;232mRemoved 59 rows containing missing values (`geom_point()`).[39m"
