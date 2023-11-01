@@ -18,6 +18,29 @@ df <-
 df[is.na(df)] <- 0
 
 
+round(vegdist(df), 2)
+
+
+unfolding <- function(x, method = "euclidean") {
+  n <- nrow(x)
+  N <- (n^2 - n)/2
+  unfold <- data.frame(i = 1:N, Object_j = NA, Object_k = NA, Distance = NA)
+  pos <- 0
+  for(i in 1:(n-1)) for(j in (i+1):n) {
+    pos <- pos + 1
+    unfold$Object_j[pos] <- i
+    unfold$Object_k[pos] <- j
+  }
+  unfold$Distance <- as.vector(vegdist(x, method = method))
+  unfold
+}
+
+
+
+distance <- unfolding(df, method = "bray")
+
+write.table(distance, file = "clipboard", sep = "\t", row.names = F)
+
 pca_df <- rda(df)
 
 mds_df <- metaMDS(df)
