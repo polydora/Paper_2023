@@ -181,3 +181,13 @@ summary(SdSt)
 SquaresSt <- t.test(Squares ~ Status, data = snail_move)
 summary(SquaresSt)
 
+####################################################################
+setwd('H:/Text/Paper_2023/Sasha/r_calc_snailmovent/Data')
+snail_move2 <- read_excel("snail_movement_2023_lenght.xlsx", na = "NA")
+
+Litt2 <- snail_move2[snail_move2$Species == "Littorina",]
+Hydr2 <- snail_move2[snail_move2$Species == "Hydrobia",]
+
+ggplot(Litt2, aes(y = Value, fill = Status)) + geom_boxplot() + theme_bw() + facet_wrap(vars(Trait))
+
+ggplot(Hydr2, aes(y = Value, fill = Status)) + geom_boxplot() + theme_bw() + facet_wrap(vars(Trait))
