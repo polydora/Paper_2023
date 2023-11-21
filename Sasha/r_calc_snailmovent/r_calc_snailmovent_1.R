@@ -181,3 +181,26 @@ summary(SdSt)
 SquaresSt <- t.test(Squares ~ Status, data = snail_move)
 summary(SquaresSt)
 
+####################################################################
+setwd('H:/Text/Paper_2023/Sasha/r_calc_snailmovent/Data')
+snail_move2 <- read_excel("snail_movement_2023_lenght.xlsx", na = "NA")
+
+Litt2 <- snail_move2[snail_move2$Species == "Littorina",]
+Hydr2 <- snail_move2[snail_move2$Species == "Hydrobia",]
+
+ggplot(Litt2, aes(y = Value, x = Status, fill = Status)) + geom_boxplot() + theme_bw() + facet_wrap(~Trait,scales = "free_y")
+
+ggplot(Hydr2, aes(y = Value, x = Status,  fill = Status)) + geom_boxplot() + theme_bw() + facet_wrap(~Trait,scales = "free_y")
+
+ggplot(Barbar, aes(y = Sd, x = Species, fill = Status)) + geom_boxplot() + theme_bw() 
+
+ggplot(snail_move2, aes(y = Sd, x = Species, fill = Status)) + geom_boxplot() + theme_bw() 
+
+model_hydr2_sd <- aov(Sd ~ Aperture_size * Status, data = Barbar_Litt)
+
+summary(model_hydr2_sd)
+
+ggplot(Barbar, aes(y = Speed, x = Aperture_size, fill = Status, color = Status)) + geom_point() + geom_smooth(method = 'lm') + theme_bw()
+
+ggplot(Barbar, aes(y = Squares, x = Aperture_size, fill = Status, color = Status)) + geom_point() + theme_bw()  + geom_smooth(method = 'lm') 
+
