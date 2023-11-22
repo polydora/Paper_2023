@@ -204,3 +204,4 @@ ggplot(Barbar, aes(y = Speed, x = Aperture_size, fill = Status, color = Status))
 
 ggplot(Barbar, aes(y = Squares, x = Aperture_size, fill = Status, color = Status)) + geom_point() + theme_bw()  + geom_smooth(method = 'lm') 
 
+version
