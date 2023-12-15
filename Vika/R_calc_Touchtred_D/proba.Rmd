@@ -1,0 +1,116 @@
+---
+title: "Биссус, как средства подваления конкурнетов у беломорских мидий"
+author: ""
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(cowplot)
+
+opts_chunk$set(echo = FALSE)
+```
+
+## Введение
+
+
+## Материал и методика
+
+```{r}
+
+myt <- read_excel("Data/TouchTrEd_D_2023.xlsx", na = "NA")
+
+myt <- myt %>% filter(!is.na(Supposed_Morph_A))
+
+myt <- myt %>% mutate(Reciproc = ifelse(Reciprocal_threads == "0", "No", "Present"), Total_Bys_A =  To_Substr_A + To_mate_A, Total_Bys_B = To_Substr_B + To_mate_B, Prop_to_Mate_A = To_mate_A/Total_Bys_A, Prop_to_Mate_B = To_mate_B/Total_Bys_B)
+
+myt <- myt %>% filter(Experiment_Type == "Field")
+
+myt <-
+  myt %>% mutate(Pair_Type = case_when(Morph_A == "t" & Morph_B == "t" ~ "TT",
+                                        Morph_A == "e" & Morph_B == "e" ~ "EE",
+                                        Morph_A == "t" & Morph_B == "e" |  Morph_A == "e" & Morph_B == "t"  ~ "ET") )
+
+
+myt2 <-
+myt %>% filter(!((Supposed_Morph_A != Morph_A)|(Supposed_Morph_B != Morph_B)) )
+
+
+myt2 <- myt2 %>% filter(Experiment_Type == "Field")
+
+```
+
+
+
+## Изложение результатов
+
+
+
+
+```{r}
+Pl_total_A <- 
+ggplot(myt2, aes(x = Pair_Type, y = Total_Bys_A, fill = Morph_A)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_fill_manual(values = c("blue", "red"))+
+  geom_hline(yintercept = mean(c(mean(myt2$Total_Bys_A), mean(myt2$Total_Bys_B))), linetype = 2) +
+  ylim(0, 50)
+
+
+Pl_total_B <-  
+ggplot(myt2, aes(x = Pair_Type, y = Total_Bys_B, fill = Morph_B)) +
+  geom_boxplot()+
+  theme_bw()+
+  scale_fill_manual(values = c("blue", "red"))+
+  geom_hline(yintercept = mean(c(mean(myt2$Total_Bys_A), mean(myt2$Total_Bys_B))), linetype = 2)+
+  ylim(0, 50)
+ 
+plot_grid(Pl_total_A, Pl_total_B)
+  
+```
+
+
+
+```{r}
+Pl_prop_A <- 
+ggplot(myt2, aes(x = Pair_Type, y = Prop_to_Mate_A, fill = Morph_A)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_fill_manual(values = c("blue", "red")) +
+  geom_hline(yintercept = 0.5, linetype = 2)
+
+Pl_prop_B <-  
+ggplot(myt2, aes(x = Pair_Type, y = Prop_to_Mate_B, fill = Morph_B)) +
+  geom_boxplot()+
+  theme_bw()+
+  scale_fill_manual(values = c("blue", "red"))+
+  geom_hline(yintercept = 0.5, linetype = 2)
+ 
+plot_grid(Pl_prop_A, Pl_prop_B)
+```
+
+
+
+Частота "взаимного" биссуса в парах разного состава
+
+```{r}
+
+myt2 %>%
+  group_by(Pair_Type) %>%
+  summarise(Prop_Reciproc = mean(Reciproc == "Present")) %>% 
+  ggplot(., aes(x = Pair_Type, y = Prop_Reciproc )) +
+  geom_col()+
+  theme_bw()
+
+
+
+```
+
+
+
+## Обсуждение 
+
