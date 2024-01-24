@@ -56,6 +56,7 @@ myttred2 <-
   mutate(pop = case_when(N < 40 ~ 20,
                           N >= 40 & N < 60 ~ 60,
                           N >= 60 ~ 120))
+unique(myttred2$N)
 ```
 
 ```{r linear models & stepwise regression, results='hide'}

@@ -187,7 +187,7 @@ iris[, -3]
 
 MyData <- expand.grid(morphotype = c("t", "e"), L= mean(myttred2$L, na.rm = T), PropT = seq(min(myttred2$PropT), max(myttred2$PropT), length.out = 100), N = seq(min(myttred2$N), max(myttred2$N), length.out = 100))
 
-predicted <- predict(Mod10, newdata = MyData)
+predicted <- predict(Mod10, newdata = MyData, type = "response", se.fit = T)
 
 MyData$Fit = predicted
 
