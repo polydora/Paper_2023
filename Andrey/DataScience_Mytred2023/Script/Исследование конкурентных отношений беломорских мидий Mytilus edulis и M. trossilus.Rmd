@@ -57,6 +57,10 @@ myttred2 <-
                           N >= 40 & N < 60 ~ 60,
                           N >= 60 ~ 120))
 unique(myttred2$N)
+
+myttred2 <- 
+  myttred2 %>% mutate(Species = case_when(Species == ""))
+  
 ```
 
 ```{r linear models & stepwise regression, results='hide'}
@@ -194,9 +198,11 @@ Pl_MyData_Type <- ggplot(MyData_Type, aes(x = N, y = Fit, color = Species)) +
   geom_line(size = 1) +
   geom_ribbon(aes(ymin = Fit - 1.96*SE, ymax = Fit + 1.96*SE), alpha = 0.2) +
   facet_wrap(~type) +
-  scale_color_manual(values = c("blue", "yellow")) +
+  scale_color_manual(values = c("blue", "red")) +
   labs(x = "Плотность", y = "Смертность", color = "Вид") +
-  theme_bw()
+  theme_classic() +
+  theme(legend.position = "bottom")
+  
 ```
 
 
