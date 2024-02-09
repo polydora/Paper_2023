@@ -6,36 +6,50 @@ library(readxl)
 
 
 
-veg <- read_excel("Data/Tim_data.xlsx", sheet = "Фитоценоз 2021")
+veg <- read_excel("Data/Tim_data.xlsx", sheet = "Фитоценоз 2020 2021")
 
-snail <- read_excel("Data/Tim_data.xlsx", sheet = "Улитки 2021")
+snail <- read_excel("Data/Tim_data.xlsx", sheet = "Улитки 2020 2021")
 
 
 df <-
-  dcast(Core ~ Species, data = veg, value.var = "Cover")
+  dcast(Sample ~ Species, data = veg, value.var = "Cover")
 
 
 df[is.na(df)] <- 0
 
 
-pca_df <- rda(df)
+df_2 <- decostand(df[, -1], method = "rank")
 
-mds_df <- metaMDS(df)
+
+mds_df <- metaMDS(df_2)
+
+# mds_df <- rda(df_2)
 
 plot(mds_df, type = "t")
-summary(pca_df)
-
-
-
-plot(pca_df, display = "species")
-
-plot(pca_df, display = "sites")
-
 
 
 MDS <- as.data.frame(mds_df$points)
 
-ggplot(MDS, aes(MDS1, MDS2) ) + geom_point(aes(size = snail$Number))
+MDS_sp <- as.data.frame(scores(mds_df)$species)
 
+
+MDS$Sample <- df$Sample
+
+MDS$Year <- as.factor(sub("_.*", "", MDS$Sample))
+
+MDS <-
+merge(MDS, snail)
+
+ggplot(MDS, aes(MDS1, MDS2) ) +
+  geom_point(aes(color = Year, size = log(Abundance+1) ), position = position_jitter(width = 1))+
+  geom_text(data = MDS_sp, aes(x = NMDS1, y = NMDS2, label = rownames(MDS_sp)))
+
+df_3 <- df %>% select(-`Голая земля`)
+H <- data.frame(H = diversity(df_3[,-1]), Sample = df$Sample)
+
+H_snail <-
+merge(H, snail)
+
+ggplot(H_snail, aes(x = H, y = Abundance)) + geom_point() + geom_smooth()
 
 
