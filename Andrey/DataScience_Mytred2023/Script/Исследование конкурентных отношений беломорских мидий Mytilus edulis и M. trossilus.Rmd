@@ -59,7 +59,8 @@ myttred2 <-
 unique(myttred2$N)
 
 myttred2 <- 
-  myttred2 %>% mutate(Species = case_when(Species == ""))
+  myttred2 %>% mutate(Species = case_when(Species == "ME" ~ "M.edulis",
+                                          Species == "MT" ~ "M.trossulus"))
   
 ```
 
