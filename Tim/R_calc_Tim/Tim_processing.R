@@ -45,11 +45,21 @@ ggplot(MDS, aes(MDS1, MDS2) ) +
   geom_text(data = MDS_sp, aes(x = NMDS1, y = NMDS2, label = rownames(MDS_sp)))
 
 df_3 <- df %>% select(-`Голая земля`)
-H <- data.frame(H = diversity(df_3[,-1]), Sample = df$Sample)
+H <- data.frame(H = diversity(df_3[,-1]), Sample = df$Sample, index = "simpson")
+
 
 H_snail <-
 merge(H, snail)
 
-ggplot(H_snail, aes(x = H, y = Abundance)) + geom_point() + geom_smooth()
+ggplot(H_snail, aes(x = H, y = (Abundance) )) + geom_point() + geom_smooth()
 
 
+dist_df_3 <- vegdist(df_3[, -1])
+
+plot(hclust(dist_df_3, method = "ward.D"))
+
+clusters <- hclust(dist_df_3, method = "ward.D")
+
+df_3$cluster <- clusters$order
+
+write.table(as.data.frame(df_3), "clipboard", sep = "\t")
