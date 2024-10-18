@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ---
 title: ''
 output:
@@ -281,3 +282,5 @@ kable(Tt_df_l, caption = "Табл. 6. Результаты дисперсион
 данная работа.
 
 # Список литературы
+=======
+>>>>>>> Stashed changes

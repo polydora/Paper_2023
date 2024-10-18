@@ -37,16 +37,8 @@ myttred2 <-
   mutate(pop = case_when(N < 40 ~ 20,
                           N >= 40 & N < 60 ~ 60,
                           N >= 60 ~ 120))
-myttred2$L
 
-myttred2.dead <- myttred2 %>% filter(status == "dead")
-
-sum(is.na(myttred2.dead$L))/nrow(myttred2.dead)*100
-
-myttred_conts <- myttred2 %>% group_by(N.cont, type, morphotype) %>% summarise(N = mean(N), PropDead = mean(Out))
-
-myttred2.highpop <- myttred2 %>% filter(pop >= 120)
-
+myttred2 %>% group_by(N.cont) %>% 
 
 # ------ графики без обработки -------
 
@@ -64,7 +56,7 @@ myttred2.highpop <- myttred2 %>% filter(pop >= 120)
 #   facet_wrap(~morphotype)
 
 
-# -------- linear models ---------
+# -------- linear models & stepwise regression  ---------
 
 
 Mod <- glm(Out ~ morphotype * N * type * L, data = myttred2, family = "binomial")
@@ -195,7 +187,7 @@ iris[, -3]
 
 MyData <- expand.grid(morphotype = c("t", "e"), L= mean(myttred2$L, na.rm = T), PropT = seq(min(myttred2$PropT), max(myttred2$PropT), length.out = 100), N = seq(min(myttred2$N), max(myttred2$N), length.out = 100))
 
-predicted <- predict(Mod10, newdata = MyData)
+predicted <- predict(Mod10, newdata = MyData, type = "response", se.fit = T)
 
 MyData$Fit = predicted
 
