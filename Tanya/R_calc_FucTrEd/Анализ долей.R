@@ -33,7 +33,7 @@ myt %>%
          Prop_T_algae_2 = N_T_algae /(N_T_algae + N_E_algae),
            Diff = Prop_T_algae_2 - Prop_T_bottom,
          d = N_Fuc - N_Asc) %>% 
-  filter(Type == 'закрытый') %>% 
+  filter(Open == 'закрытый') %>% 
   filter(N_final != 0)
 
 # ggplot(myt, aes(x = NE+NT, y = 1:nrow(myt))) + 
@@ -41,7 +41,8 @@ myt %>%
 
 myt <-
   myt %>% 
-  filter(ID != 34)
+  filter(ID != 34) %>% 
+  filter(Type == 'ET')
 
 range(myt$Prop_T)
 
@@ -73,14 +74,28 @@ ggplot(myt, aes(x=N_final, y=Prop_dead_E)) +
 
 
 # Плотность Т на фукоидах. Значимо зависит от итоговой плотности N_final, Estimate > 0.
-mod_1 <- lm(Prop_T_algae ~ Prop_T + N_final + weight_Asc + weight_Fuc, data = myt)
-summary(mod_1)
+lm_mod_1 <- lm(Prop_T_algae ~ Prop_T + N_final + weight_Asc + weight_Fuc, data = myt)
+drop1(lm_mod_1)
+lm_mod1_2 <- lm(Prop_T_algae ~ Prop_T + N_final + weight_Fuc, data = myt)
+drop1(lm_mod1_2)
+lm_mod1_3 <- lm(Prop_T_algae ~ Prop_T + N_final, data = myt)
+drop1(lm_mod1_3)
+
+summary(lm_mod1_3)
 
 hist(resid(mod_1))
 
 # Плотность Е на фукоидах. От этих факторов значимо не зависит.
-mod_2 <- lm(Prop_E_algae ~ Prop_T + N_final + weight_Asc + weight_Fuc, data = myt)
-summary(mod_2)
+lm_mod_2 <- lm(Prop_E_algae ~ Prop_T + N_final + weight_Asc + weight_Fuc, data = myt)
+drop1(lm_mod_2)
+lm_mod2_2 <- lm(Prop_E_algae ~ Prop_T + N_final + weight_Asc, data = myt)
+drop1(lm_mod2_2)
+lm_mod2_3 <- lm(Prop_E_algae ~ N_final + weight_Asc, data = myt)
+drop1(lm_mod2_3)
+lm_mod2_4 <- lm(Prop_E_algae ~ weight_Asc, data = myt)
+drop1(lm_mod2_4)
+
+summary(lm_mod2_4)
 
 # Визуализация относительно Prop_T
 ggplot(myt, aes(x=N_final, y = N_T_algae)) +

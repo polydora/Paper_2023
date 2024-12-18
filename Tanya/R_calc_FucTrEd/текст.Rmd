@@ -137,15 +137,5 @@ kable(tidy(mod2_3))
 
 
 ```{r, echo=FALSE}
-mod_2 <- glm(Substrate ~  Prop_T*Morphotype*N_final*weight_Asc*weight_Fuc, data = myt_outcome_1 )
-drop1(mod_2)
-mod_2_2 <- update(mod_2, .~. - Prop_T:Morphotype:N_final:weight_Asc:weight_Fuc)
-drop1(mod_2_2)
-mod_2_3 <- update(mod_2_2, .~. - Prop_T:Morphotype:weight_Asc:weight_Fuc)
-drop1(mod_2_3)
-mod_2_4 <- update(mod_2_3, .~. - Morphotype:N_final:weight_Asc:weight_Fuc)
-drop1(mod_2_4)
 
-summary()
-kable(tidy(mod_2_4))
 ```

@@ -7,10 +7,14 @@ library(ggplot2)
 
 myt_status <- read_excel('Data/FucTrEd.xlsx', sheet = 'Лист3')
 
+myt_status <-
+  myt_status %>% 
+  filter(Type == 'ET')
+
 
 
 myt_status %>% 
-  pivot_longer(cols = -c(ID, Location, Status, Morphotype)  ) %>%
+  pivot_longer(cols = -c(ID, Location, Status, Morphotype, Type)) %>%
   uncount(value)  %>%
   as_tibble ->
   myt_outcome
@@ -46,13 +50,15 @@ drop1(mod3)
 mod4 <- update(mod3, . ~ . - N_final )
 drop1(mod4)
 
+mod5 <- update(mod4, .~. - Prop_T)
+drop1(mod5)
 
-summary(mod4)
+summary(mod5)
 
-My_data <- expand.grid(Substrate = c("Bottom", "Algae"), Morphotype = c("T", "E"), Prop_T = seq(min(myt_outcome$Prop_T), max(myt_outcome$Prop_T), length.out = 20))
+My_data <- expand.grid(Substrate = c("Bottom", "Algae"), Morphotype = c("T", "E"))
 
 
-predicted <- predict(mod4, newdata = My_data, se.fit = T)
+predicted <- predict(mod5, newdata = My_data, se.fit = T)
 
 My_data$Predicted <- predicted$fit
 My_data$SE <- predicted$se.fit

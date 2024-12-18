@@ -22,6 +22,7 @@ myt_outcome_1 %>%
 
 
 
+
 myt <- read_excel('Data/FucTrEd.xlsx', sheet = 'Лист2')
 
 myt <-
@@ -51,10 +52,12 @@ myt <-
          Diff = Prop_T_algae_2 - Prop_T_bottom,
          d = N_Fuc - N_Asc,
          weight_algae = weight_Asc + weight_Fuc) %>% 
-  filter(Type == 'закрытый') %>% 
+  filter(Open == 'закрытый') %>% 
   filter(N_final != 0)
 
-
+myt <-
+  myt %>% 
+  filter(Type)
 
 myt <- 
   myt %>% 
@@ -122,6 +125,18 @@ drop1(mod_2_11)
 
 summary(mod_2_10)
 #Визуализация mod_2_10
+
+My_data <- expand.grid(N_final = myt_outcome_1$N_final, weight_algae = myt_outcome_1$weight_algae, Morphotype = c("T", "E"), Prop_T = seq(min(myt_outcome_1$Prop_T), max(myt_outcome_1$Prop_T), length.out = 20))
+
+
+predicted <- predict(mod_2_10, newdata = My_data, se.fit = T)
+
+My_data$Predicted <- predicted$fit
+My_data$SE <- predicted$se.fit
+
+
+ggplot(My_data, aes(x = Prop_T, y = Predicted)) + geom_line() + geom_ribbon(aes(ymin = Predicted - 2*SE, ymax = Predicted + 2*SE), alpha = 0.2)+ facet_wrap(~ Substrate)
+
 
 mod_2_2 <- update(mod_2, .~. - Prop_T:Morphotype:N_final)
 drop1(mod_2_2)
